@@ -55,10 +55,10 @@ while True:
             else:
 
                 if validar_cpf_2(entrada):
-                    print('CPF Válido!\n')
+                    print('Seu CPF é válido!\n')
 
                 else:
-                    print('CPF Inválido!\n')
+                    print('Seu CPF é Inválido!\n')
         else:
 
             print('O CPF deve conter 11 dígitos!\n')
