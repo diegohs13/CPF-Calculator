@@ -1,43 +1,72 @@
-cpf_digitado = input("Digite seu CPF sem pontuações:")
+def validar_cpf_2(cpf):
+    corpo_cpf = cpf[:9]
+    digito_cpf = cpf[-2:]
 
-digito_1 = int(cpf_digitado[0])
-digito_2 = int(cpf_digitado[1])
-digito_3 = int(cpf_digitado[2])
-digito_4 = int(cpf_digitado[3])
-digito_5 = int(cpf_digitado[4])
-digito_6 = int(cpf_digitado[5])
-digito_7 = int(cpf_digitado[6])
-digito_8 = int(cpf_digitado[7])
-digito_9 = int(cpf_digitado[8])
-digito_10 = int(cpf_digitado[9])
-digito_11 = int(cpf_digitado[10])
+    calculo_1 = 0
+    calculo_2 = 0
 
-resto_primeiro_digito_verificador = (digito_1 * 10 + digito_2 * 9 + digito_3 * 8 + digito_4 * 7 + digito_5
-                                     * 6 + digito_6 * 5 + digito_7 * 4 + digito_8 * 3 + digito_9 * 2) % 11
+    multiplicacao = [10, 9, 8, 7, 6, 5, 4, 3, 2]
 
-if resto_primeiro_digito_verificador == 0:
-    primeiro_digito_verificador = 0
+    for i, j in zip(multiplicacao, corpo_cpf):
+        calculo_1 += i * int(j)
 
-elif resto_primeiro_digito_verificador == 1:
-    primeiro_digito_verificador = 0
+    resto_1 = calculo_1 % 11
 
-else:
-    primeiro_digito_verificador = 11 - resto_primeiro_digito_verificador
+    digito_1 = 0 if resto_1 < 2 else 11 - resto_1
 
-resto_segundo_digito_verificador = (digito_2 * 10 + digito_3 * 9 + digito_4 * 8 + digito_5 * 7 + digito_6
-                                    * 6 + digito_7 * 5 + digito_8 * 4 + digito_9 * 3 +
-                                    primeiro_digito_verificador * 2) % 11
+    corpo_cpf += str(digito_1)
 
-if resto_segundo_digito_verificador == 0:
-    segundo_digito_verificador = 0
+    for i, j in zip(multiplicacao, corpo_cpf[1:]):
+        calculo_2 += i * int(j)
 
-elif resto_segundo_digito_verificador == 1:
-    segundo_digito_verificador = 0
+    resto_2 = calculo_2 % 11
 
-else:
-    segundo_digito_verificador = 11 - resto_segundo_digito_verificador
+    digito_2 = 0 if resto_2 < 2 else 11 - resto_2
 
-if digito_10 == primeiro_digito_verificador and digito_11 == segundo_digito_verificador:
-    print(f'Seu CPF é {True}')
-else:
-    print(f'Seu CPF é {False}')
+    return digito_cpf == f'{digito_1}{digito_2}'
+
+
+blocklist = [
+    '00000000000',
+    '11111111111',
+    '22222222222',
+    '33333333333',
+    '44444444444',
+    '55555555555',
+    '66666666666',
+    '77777777777',
+    '88888888888',
+    '99999999999'
+]
+
+while True:
+
+    entrada = input('Digite seu CPF para entrar ou X para sair: ')
+    entrada = entrada.replace('.', '').replace('-', '')
+
+    if entrada.isnumeric():
+
+        if len(entrada) == 11:
+
+            if entrada in blocklist:
+
+                print('O CPF não pode ter todos os números iguais!\n')
+
+            else:
+
+                if validar_cpf_2(entrada):
+                    print('CPF Válido!\n')
+
+                else:
+                    print('CPF Inválido!\n')
+        else:
+
+            print('O CPF deve conter 11 dígitos!\n')
+
+    elif entrada.lower() == 'x':
+        break
+
+    else:
+        print('Digite apenas números ou X para sair.\n')
+
+print('Obrigado, volte sempre!')
